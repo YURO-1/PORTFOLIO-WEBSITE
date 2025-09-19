@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>My Projects | Portfolio</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <style>
+        body {
+            font-family: 'Segoe UI', Arial, sans-serif;
+            background: #f4f4f4;
+            margin: 0;
+            padding: 0;
+        }
+        header {
+            background: #222;
+            color: #fff;
+            padding: 2rem 0 2.5rem;
+            text-align: center;
+        }
+        header h1 { margin: 0 0 0.5rem; font-size: 2.2rem; }
+        header p { margin: 0 0 1rem; color: #ccc; }
+        .yuro-btn {
+            background: #0078d4;
+            color: #fff;
+            padding: 0.6rem 1.2rem;
+            border-radius: 6px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: background 0.3s;
+        }
+        .yuro-btn:hover { background: #005a9e; }
+
+        .projects-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 2rem;
+            padding: 2rem;
+        }
+        .project-card {
+            background: #fff;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            width: 320px;
+            padding: 1.5rem;
+            transition: box-shadow 0.2s, transform 0.3s;
+        }
+        .project-card:hover {
+            box-shadow: 0 4px 16px rgba(0,0,0,0.15);
+            transform: scale(1.05) translateY(-10px);
+        }
+        .project-title {
+            font-size: 1.3rem;
+            margin-bottom: 0.5rem;
+            color: #222;
+        }
+        .project-description {
+            font-size: 1rem;
+            margin-bottom: 1rem;
+            color: #555;
+        }
+        .project-links a {
+            text-decoration: none;
+            color: #0078d4;
+            margin-right: 1rem;
+            font-weight: 500;
+        }
+        @media (max-width: 700px) {
+            .projects-container {
+                flex-direction: column;
+                align-items: center;
+            }
+        }
+
+        footer {
+            background:#222;
+            color:#fff;
+            text-align:center;
+            padding:1.5rem 0;
+            margin-top:2rem;
+        }
+        footer a {
+            color:#fff;
+            margin:0 0.6rem;
+            text-decoration:none;
+            font-size:1.2rem;
+        }
+        footer a:hover { color:#0078d4; }
+    </style>
+</head>
+<body>
+
+<header>
+    <h1>My Projects</h1>
+    <p>Showcasing some of my best work</p>
+    <div style="display: flex; align-items: center; justify-content: space-between; gap: 2rem; flex-wrap: wrap;">
+        <a href="homepage.html" class="yuro-btn">Yuro Builds!</a>
+        <nav style="display: flex; gap: 1.5rem;">
+            <a href="homepage.html" class="yuro-nav-link">Home</a>
+            <a href="Aboutme.html" class="yuro-nav-link">Contact</a>
+        </nav>
+    </div>
+    <style>
+        .yuro-btn {
+            margin: 0;
+        }
+        .yuro-nav-link {
+            color: #fff;
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 1.05rem;
+            padding: 0.4rem 0.8rem;
+            border-radius: 4px;
+            transition: background 0.2s, color 0.2s;
+        }
+        .yuro-nav-link:hover {
+            background: #0078d4;
+            color: #fff;
+        }
+        @media (max-width: 700px) {
+            .header-flex {
+                flex-direction: column;
+                align-items: stretch;
+                gap: 0.7rem;
+            }
+            nav {
+                justify-content: flex-start;
+            }
+        }
+    </style>
+
+<main id="projects">
+    <section class="projects-container">
+        <div class="project-card">
+            <div class="project-title">Project One</div>
+            <div class="project-description">
+                A brief description of your first project. Highlight the technologies used and the main features.
+            </div>
+            <div class="project-links">
+                <a href="#" target="_blank">Live Demo</a>
+                <a href="#" target="_blank">Source Code</a>
+            </div>
+        </div>
+
+        <div class="project-card">
+            <div class="project-title">Project Two</div>
+            <div class="project-description">
+                A brief description of your second project. Mention what makes it unique or challenging.
+            </div>
+            <div class="project-links">
+                <a href="#" target="_blank">Live Demo</a>
+                <a href="#" target="_blank">Source Code</a>
+            </div>
+        </div>
+
+        <div class="project-card">
+            <div class="project-title">Project Three</div>
+            <div class="project-description">
+                A brief description of your third project. You can add more projects by duplicating this card.
+            </div>
+            <div class="project-links">
+                <a href="#" target="_blank">Live Demo</a>
+                <a href="#" target="_blank">Source Code</a>
+            </div>
+        </div>
+    </section>
+</main>
+
+<footer>
+    <div style="margin-bottom:1rem;">
+        <a href="https://github.com/YURO-1" target="_blank"><i class="fab fa-github"></i></a>
+        <a href="https://www.linkedin.com/in/yuro-aungo-383890269/" target="_blank"><i class="fab fa-linkedin"></i></a>
+        <a href="mailto:yuroaungo533@gmail.com"><i class="fa-solid fa-envelope"></i></a>
+    </div>
+    <div style="margin-bottom:1rem;font-size:1.1rem;">
+        More to be added soon
+    </div>
+    <div style="font-size:0.95rem;">
+        &copy; 2025 Yuro. All rights reserved.
+    </div>
+</footer>
+
+<script>
+    // Add three more project cards dynamically
+    const projectsContainer = document.querySelector('.projects-container');
+    const extraProjects = [
+        {
+            title: "Project Four",
+            description: "A brief description of your fourth project. Describe its purpose and technologies.",
+            demo: "#",
+            code: "#"
+        },
+        {
+            title: "Project Five",
+            description: "A brief description of your fifth project. Share what you learned building it.",
+            demo: "#",
+            code: "#"
+        },
+        {
+            title: "Project Six",
+            description: "A brief description of your sixth project. Mention any interesting challenges.",
+            demo: "#",
+            code: "#"
+        }
+    ];
+    extraProjects.forEach(p => {
+        const card = document.createElement('div');
+        card.className = 'project-card';
+        card.innerHTML = `
+            <div class="project-title">${p.title}</div>
+            <div class="project-description">${p.description}</div>
+            <div class="project-links">
+                <a href="${p.demo}" target="_blank">Live Demo</a>
+                <a href="${p.code}" target="_blank">Source Code</a>
+            </div>
+        `;
+        projectsContainer.appendChild(card);
+    });
+</script>
+
+</body>
+</html>

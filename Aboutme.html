@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>About Me | Yuro Builds</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <script src="https://cdn.emailjs.com/sdk/3.11/email.min.js"></script>
+  <style>
+    /* === Same styles as before === */
+    *{margin:0;padding:0;box-sizing:border-box;font-family:Arial,sans-serif}
+    body{background:#000;color:#eee;line-height:1.6}
+    header{background:#111;color:#fff;padding:20px 40px;display:flex;justify-content:space-between;align-items:center;position:sticky;top:0;z-index:100}
+    .logo{font-size:22px;font-weight:bold;color:skyblue}
+    #navbar{list-style:none;display:flex;gap:40px}
+    #navbar a{color:#fff;text-decoration:none;font-weight:500;transition:color .3s,transform .3s}
+    #navbar a:hover{color:skyblue;transform:translateY(-3px)}
+    .social-icons a{color:#aaa;margin-left:15px;font-size:18px;transition:.3s}
+    .social-icons a:hover{color:skyblue;transform:scale(1.2)}
+    .hero{text-align:center;padding:60px 20px}
+    .hero h1{font-size:40px;color:#fff;margin-bottom:20px}
+    .hero span{color:skyblue}
+    .hero p{max-width:700px;margin:0 auto;font-size:18px;color:#ddd}
+    .btn-primary{display:inline-block;margin-top:25px;padding:12px 28px;background:skyblue;color:#000;font-weight:bold;text-decoration:none;border-radius:30px;transition:.3s}
+    .btn-primary:hover{background:#0ca4d8;color:#fff}
+    .card{background:#fff;color:#222;border-radius:12px;padding:30px;margin:40px auto;max-width:900px;box-shadow:0 6px 20px rgba(0,0,0,.25)}
+    .card h2{color:skyblue;margin-bottom:15px}
+    .card p{margin-bottom:12px}
+    .contact{background:#111;padding:60px 20px;text-align:center}
+    .contact h2{color:skyblue;margin-bottom:25px}
+    .contact form{max-width:600px;margin:0 auto;background:#fff;color:#222;padding:30px;border-radius:12px;box-shadow:0 4px 15px rgba(0,0,0,.25)}
+    .contact input,.contact textarea{width:100%;padding:12px;margin-bottom:15px;border:1px solid #ccc;border-radius:6px}
+    .contact button{padding:12px 28px;background:skyblue;border:none;color:#000;font-weight:bold;border-radius:6px;cursor:pointer;transition:.3s}
+    .contact button:hover{background:#0ca4d8;color:#fff}
+    footer{background:#111;color:#bbb;text-align:center;padding:25px 10px;margin-top:50px}
+    footer a{color:#bbb;margin:0 10px;text-decoration:none;transition:.3s}
+    footer a:hover{color:skyblue}
+  </style>
+</head>
+<body>
+
+<header>
+  <div class="logo">Yuro Builds</div>
+  <ul id="navbar">
+    <li><a href="#about">About</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+  <div class="social-icons">
+    <a href="https://github.com/YURO-1" target="_blank"><i class="fab fa-github"></i></a>
+    <a href="https://www.linkedin.com/in/yuro-aungo-383890269/" target="_blank"><i class="fab fa-linkedin"></i></a>
+    <a href="mailto:yuroaungo533@gmail.com"><i class="fa-solid fa-envelope"></i></a>
+  </div>
+</header>
+
+<section class="hero" id="about">
+  <h1>About <span>Yuro Bw'onderi Aungo</span></h1>
+  <p>A passionate <b>Software Engineer & Full-Stack Developer</b> focused on building secure, scalable apps.
+     Skilled in JavaScript, Python, Java and modern frameworks for web, mobile & backend development.
+     Currently studying Software Engineering at USIU-A and an alumnus intern at Safaricom.</p>
+  <a href="#contact" class="btn-primary">Work With Me</a>
+</section>
+
+<div class="card">
+  <h2>Education</h2>
+  <p><b>United States International University – Africa</b> (2023–2027) – BSc Software Engineering</p>
+  <p><b>Friends School Kamusinga</b> – KCSE A (2019–2022)</p>
+  <p><b>Aga Khan Primary School</b> – KCPE 418 Marks (2014–2018)</p>
+</div>
+
+<div class="card">
+  <h2>Experience</h2>
+  <p><b>Software Engineering Intern</b>, Safaricom PLC (Apr 2024 – Jul 2024)</p>
+  <p><b>Junior Full-Stack Developer</b>, Brightwave Technologies (Jan 2023 – Mar 2024)</p>
+  <p><b>Software Development Intern</b>, TechNova Solutions (Jun 2022 – Dec 2022)</p>
+</div>
+
+<div class="card">
+  <h2>Technical Skills</h2>
+  <p>JavaScript, Python, Java, React, Node.js, Django, Spring Boot, MySQL, Docker, AWS, OAuth2, Git, Agile/Scrum.</p>
+</div>
+
+<section class="contact" id="contact">
+  <h2>Contact Me</h2>
+  <form id="contactForm">
+    <input type="text" id="from_name" placeholder="Your Name" required>
+    <input type="email" id="reply_to" placeholder="Your Email" required>
+    <textarea id="message" rows="5" placeholder="Your Message" required></textarea>
+    <button type="submit">Send Message</button>
+  </form>
+</section>
+
+<footer>
+  <div>
+    <a href="https://github.com/YURO-1" target="_blank"><i class="fab fa-github"></i></a>
+    <a href="https://www.linkedin.com/in/yuro-aungo-383890269/" target="_blank"><i class="fab fa-linkedin"></i></a>
+    <a href="mailto:yuroaungo533@gmail.com"><i class="fa-solid fa-envelope"></i></a>
+  </div>
+  <div style="margin-top:10px;">&copy; 2025 Yuro Aungo · All rights reserved.</div>
+</footer>
+
+<script>
+  (function(){ emailjs.init("JtvOXprwmXKBUkspm"); })();
+
+  document.getElementById("contactForm").addEventListener("submit", function(e){
+    e.preventDefault();
+    const params = {
+      from_name: document.getElementById("from_name").value,
+      reply_to: document.getElementById("reply_to").value,
+      message: document.getElementById("message").value
+    };
+
+    emailjs.send("service_lj4jy76","template_tjwituu",params)
+      .then(() => alert("✅ Message sent!"),
+            () => alert("❌ Oops! Try again later"));
+    this.reset();
+  });
+</script>
+
+</body>
+</html>

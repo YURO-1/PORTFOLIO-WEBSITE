@@ -4,12 +4,74 @@
   <meta charset="UTF-8">
   <title>Yuro's Portfolio</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-  <!-- Font Awesome for icons -->
+  
+  <!-- Font Awesome -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-
   <!-- Custom CSS -->
   <link rel="stylesheet" href="homepage.css">
+
+  <!-- EmailJS SDK -->
+  <script src="https://cdn.emailjs.com/sdk/3.11/email.min.js"></script>
+  
+  <script>
+    // Initialize EmailJS
+    (function(){
+      emailjs.init("JtvOXprwmXKBUkspm"); // Replace with your EmailJS Public Key
+    })();
+
+    // Open modal with message
+    function openModal(message) {
+      document.getElementById("popup-message").innerText = message;
+      document.getElementById("popup").style.display = "flex";
+    }
+
+    // Close modal
+    function closeModal() {
+      document.getElementById("popup").style.display = "none";
+    }
+
+    // Show welcome popup after page loads
+    window.onload = function() {
+      setTimeout(() => {
+        openModal("👋 Welcome to Yuro's Portfolio! Explore my works below.");
+      }, 800);
+    };
+
+    // Handle form submit with EmailJS
+    function sendEmail(event) {
+      event.preventDefault(); // stop page refresh
+
+      const email = document.getElementById("user_email").value;
+
+      let templateParams = {
+        from_email: email,
+        message: "Hi, I have viewed your portfolio and would like to work with you."
+      };
+
+      emailjs.send("service_lj4jy76", "template_thrkoib", templateParams)
+        .then(function(response) {
+          openModal("✅ Message sent successfully! I'll get back to you shortly.");
+          document.getElementById("contact-form").reset();
+        }, function(error) {
+          openModal("❌ Oops! Something went wrong. Please try again.");
+        });
+    }
+
+    // Back-to-top button toggle
+    window.onscroll = function() {
+      let btn = document.getElementById("backToTop");
+      if (document.body.scrollTop > 200 || document.documentElement.scrollTop > 200) {
+        btn.style.display = "block";
+      } else {
+        btn.style.display = "none";
+      }
+    };
+
+    // Smooth scroll to top
+    function scrollToTop() {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+  </script>
 </head>
 <body>
   <!-- HEADER -->
@@ -18,29 +80,29 @@
     <nav>
       <ul id="navbar">
         <li><a href="homepage.html">Home</a></li>
-        <li><a href="#works">Works</a></li>
-        <li><a href="about.html">Contact</a></li>
+        <li><a href="projects.html">Works</a></li>
+        <li><a href="Aboutme.html">Contact</a></li>
       </ul>
     </nav>
     <div class="social-icons">
       <a href="https://github.com/YURO-1" target="_blank"><i class="fab fa-github"></i></a>
       <a href="https://www.linkedin.com/in/yuro-aungo-383890269/" target="_blank"><i class="fab fa-linkedin"></i></a>
-      <a href="https://twitter.com/yourusername" target="_blank"><i class="fab fa-twitter"></i></a>
+      <a href="mailto:yuroaungo533@gmail.com" target="_blank"><i class="fa-solid fa-envelope"></i></a>
     </div>
   </header>
 
-  <!-- HERO SECTION -->
+  <!-- HERO -->
   <section class="hero">
     <div class="hero-text">
-      <h1>Solving mordern problems one <span>Code</span><br> at a time.</h1>
+      <h1>Solving modern problems one <span>Code</span><br> at a time.</h1>
       <p>
         Hi, I’m <strong>Yuro Aungo</strong>, a Software Engineer and Modern Systems Developer.<br>
         I specialize in <b>Distributed Systems</b>, <b>Applied AI</b>, <b>Web Development</b>, and <b>Mobile App Development</b>.
       </p>
 
-      <!-- CALL TO ACTION FORM -->
-      <form class="cta-form">
-        <input type="email" placeholder="Enter your email">
+      <!-- FORM -->
+      <form id="contact-form" class="cta-form" onsubmit="sendEmail(event)">
+        <input type="email" id="user_email" name="user_email" placeholder="Enter your email" required>
         <button type="submit">Connect With Me</button>
       </form>
     </div>
@@ -53,11 +115,10 @@
     </div>
   </section>
 
-  <!-- COMPLETED WORKS -->
+  <!-- WORKS -->
   <section class="works" id="works">
     <h2>Completed Works</h2>
     <div class="works-grid">
-
       <a href="https://github.com/YURO-1/" target="_blank" class="work-card">
         <img src="project1.jpg" alt="Project 1">
         <h3>E-commerce Platform</h3>
@@ -75,9 +136,19 @@
         <h3>ANITA The Receptionist</h3>
         <p>An AI agent which reads through clients emails and schedules meetings with them based on your schedule</p>
       </a>
-
     </div>
   </section>
+
+  <!-- BACK TO TOP -->
+  <button id="backToTop" onclick="scrollToTop()"><i class="fas fa-arrow-up"></i></button>
+
+  <!-- CUSTOM POPUP -->
+  <div id="popup" class="popup-overlay">
+    <div class="popup-box">
+      <p id="popup-message"></p>
+      <button onclick="closeModal()">OK</button>
+    </div>
+  </div>
 
   <!-- FOOTER -->
   <footer>
@@ -85,4 +156,6 @@
   </footer>
 </body>
 </html>
+
+
 
