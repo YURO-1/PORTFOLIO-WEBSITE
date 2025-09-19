@@ -7,8 +7,8 @@
 }
 
 body {
-  color: #222;
-  background: #ffffff;
+  color: #eee;
+  background: #000;        /* <-- black page background */
   display: flex;
   flex-direction: column;
   min-height: 100vh;
@@ -22,15 +22,15 @@ header {
   padding: 20px 60px;
   position: sticky;
   top: 0;
-  background:black;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+  background: #111;        /* slightly lighter black */
+  box-shadow: 0 2px 8px rgba(0,0,0,0.6);
   z-index: 100;
 }
 
 .logo {
   font-size: 20px;
   font-weight: bold;
-  color:skyblue;
+  color: skyblue;
 }
 
 #navbar {
@@ -41,27 +41,25 @@ header {
 
 #navbar li a {
   text-decoration: none;
-  color: white;
+  color: #eee;
   font-weight: 500;
   transition: color 0.3s ease, transform 0.3s ease;
-  display: inline-block;
 }
 
 #navbar li a:hover {
-  color: #6c63ff;
+  color: skyblue;
   transform: translateY(-4px);
 }
 
 .social-icons a {
   margin-left: 15px;
   font-size: 18px;
-  color: #444;
+  color: #ccc;
   transition: color 0.3s ease, transform 0.3s ease;
-  display: inline-block;
 }
 
 .social-icons a:hover {
-  color: #6c63ff;
+  color: skyblue;
   transform: translateY(-4px) scale(1.2);
 }
 
@@ -72,10 +70,9 @@ header {
   align-items: center;
   padding: 80px 60px;
   gap: 50px;
-  flex-wrap: wrap; /* responsive */
+  flex-wrap: wrap;
 }
 
-/* HERO TEXT */
 .hero-text {
   flex: 1;
   max-width: 550px;
@@ -84,17 +81,16 @@ header {
 .hero-text h1 {
   font-size: 48px;
   line-height: 1.2;
+  color: #fff;
   animation: fadeInUp 1s ease-out;
 }
 
-.hero-text span {
-  color: #6c63ff;
-}
+.hero-text span { color: skyblue; }
 
 .hero-text p {
   margin: 20px 0;
   font-size: 16px;
-  color: #555;
+  color: #ccc;
 }
 
 .cta-form {
@@ -104,18 +100,21 @@ header {
 
 .cta-form input {
   padding: 12px;
-  border: 1px solid #ccc;
+  border: 1px solid #333;
+  background: #111;
+  color: #eee;
   border-radius: 6px 0 0 6px;
   flex: 1;
 }
 
 .cta-form button {
   padding: 12px 20px;
-  background: #6c63ff;
-  color: white;
+  background: skyblue;
+  color: #000;
   border: none;
   border-radius: 0 6px 6px 0;
   cursor: pointer;
+  font-weight: bold;
 }
 
 /* HERO IMAGE */
@@ -126,21 +125,18 @@ header {
   align-items: center;
 }
 
-.avatar-wrapper {
-  position: relative;
-  display: inline-block;
-}
+.avatar-wrapper { position: relative; display: inline-block; }
 
 .avatar {
   width: 200px;
   height: 200px;
-  border-radius: 50%; 
+  border-radius: 50%;
   object-fit: cover;
-  border: 6px solid #6c63ff;
-  box-shadow: 0 6px 16px rgba(0,0,0,0.1);
+  border: 6px solid skyblue;
+  box-shadow: 0 6px 16px rgba(0,0,0,0.6);
 }
 
-/* FLOATING BUTTON */
+/* VIEW WORKS BUTTON */
 .works-btn {
   text-align: center;
   margin-top: -30px;
@@ -149,54 +145,56 @@ header {
 .works-btn a {
   display: inline-block;
   padding: 14px 28px;
-  background: #6c63ff;
-  color: #fff;
+  background: skyblue;
+  color: #000;
   border-radius: 30px;
   font-weight: bold;
   text-decoration: none;
-  transition: 0.3s;
+  transition: background 0.3s;
 }
 
 .works-btn a:hover {
-  background: #5848d3;
+  background: #0ca4d8;
+  color: #fff;
 }
 
-/* WORKS SECTION FULL WIDTH */
+/* WORKS SECTION */
 .works {
   width: 100%;
   padding: 80px 60px;
   text-align: center;
-  background: #fafafa;
+  background: #000;
 }
 
 .works h2 {
   font-size: 36px;
   margin-bottom: 50px;
+  color: skyblue;
 }
 
 .works-grid {
   display: flex;
   justify-content: center;
   gap: 30px;
-  flex-wrap: wrap; /* responsive horizontal layout */
+  flex-wrap: wrap;
 }
 
+/* Project cards keep white background for contrast */
 .work-card {
   flex: 1 1 280px;
   max-width: 320px;
   background: #fff;
   border-radius: 16px;
   padding: 20px;
-  box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+  box-shadow: 0 5px 15px rgba(0,0,0,0.5);
   transition: transform 0.3s, box-shadow 0.3s;
+  color: #222;
   text-decoration: none;
-  color: inherit;
-  display: block;
 }
 
 .work-card:hover {
   transform: translateY(-8px);
-  box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+  box-shadow: 0 8px 20px rgba(0,0,0,0.6);
 }
 
 .work-card img {
@@ -207,39 +205,33 @@ header {
   margin-bottom: 20px;
 }
 
-.work-card h3 {
-  font-size: 20px;
-  margin-bottom: 10px;
-}
-
-.work-card p {
-  font-size: 15px;
-  color: #555;
-}
+.work-card h3 { font-size: 20px; margin-bottom: 10px; color: #000; }
+.work-card p { font-size: 15px; color: #555; }
 
 /* FOOTER */
 footer {
   text-align: center;
   padding: 20px;
   font-size: 14px;
-  color: #555;
-  background: #fff;
-  border-top: 1px solid #eee;
-  margin-top: auto; /* pushes footer to bottom */
+  color: #bbb;
+  background: #111;
+  border-top: 1px solid #333;
+  margin-top: auto;
 }
 
-/* SIMPLE ANIMATION */
+/* ANIMATION */
 @keyframes fadeInUp {
   from { opacity: 0; transform: translateY(30px); }
   to { opacity: 1; transform: translateY(0); }
 }
+
 /* BACK TO TOP BUTTON */
 #backToTop {
   position: fixed;
   bottom: 30px;
   right: 30px;
-  background: #6c63ff;
-  color: #fff;
+  background: skyblue;
+  color: #000;
   border: none;
   border-radius: 50%;
   width: 45px;
@@ -247,23 +239,22 @@ footer {
   font-size: 20px;
   display: none;
   cursor: pointer;
-  box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+  box-shadow: 0 4px 10px rgba(0,0,0,0.5);
   transition: background 0.3s, transform 0.3s;
   z-index: 200;
 }
-
 #backToTop:hover {
-  background: #5848d3;
+  background: #0ca4d8;
   transform: translateY(-4px);
 }
 
-/* CUSTOM POPUP MODAL */
+/* POPUP MODAL */
 .popup-overlay {
   display: none;
   position: fixed;
   top: 0; left: 0;
   width: 100%; height: 100%;
-  background: rgba(0,0,0,0.6);
+  background: rgba(0,0,0,0.8);
   justify-content: center;
   align-items: center;
   z-index: 300;
@@ -275,26 +266,17 @@ footer {
   border-radius: 12px;
   max-width: 400px;
   text-align: center;
-  box-shadow: 0 6px 20px rgba(0,0,0,0.25);
+  box-shadow: 0 6px 20px rgba(0,0,0,0.6);
   animation: fadeInUp 0.4s ease;
 }
-
-.popup-box p {
-  margin-bottom: 20px;
-  font-size: 16px;
-  color: #333;
-}
-
+.popup-box p { margin-bottom: 20px; font-size: 16px; color: #333; }
 .popup-box button {
   padding: 10px 20px;
-  background: #6c63ff;
-  color: #fff;
+  background: skyblue;
+  color: #000;
   border: none;
   border-radius: 6px;
   cursor: pointer;
   transition: background 0.3s;
 }
-
-.popup-box button:hover {
-  background: #5848d3;
-}
+.popup-box button:hover { background: #0ca4d8; color: #fff; }
