@@ -63,7 +63,6 @@ header {
   transform: translateY(-4px) scale(1.2);
 }
 
-/* HERO SECTION */
 .hero {
   display: flex;
   justify-content: space-between;
