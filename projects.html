@@ -2,236 +2,756 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>My Projects | Portfolio</title>
+  <title>Works | Yuro Builds</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="stylesheet"
-        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet">
   <style>
-    /* ===== BASIC RESET ===== */
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-      font-family: 'Segoe UI', Arial, sans-serif;
+    :root {
+      --sky: #87CEEB;
+      --sky-bright: #38bdf8;
+      --sky-glow: rgba(135,206,235,0.15);
+      --black: #000;
+      --dark: #0a0a0a;
+      --card-bg: #0f0f0f;
+      --border: rgba(135,206,235,0.12);
+      --text: #e8e8e8;
+      --muted: #777;
     }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
 
     body {
-      background: #000;
-      color: #eee;
+      background: var(--black);
+      color: var(--text);
+      font-family: 'DM Sans', sans-serif;
+      font-weight: 300;
       min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    /* === NOISE OVERLAY === */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+      pointer-events: none;
+      z-index: 0;
+      opacity: 0.4;
+    }
+
+    /* === AMBIENT GLOW === */
+    .ambient {
+      position: fixed;
+      width: 600px;
+      height: 600px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(135,206,235,0.06) 0%, transparent 70%);
+      top: -200px;
+      right: -200px;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    /* === NAV === */
+    nav {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgba(0,0,0,0.85);
+      backdrop-filter: blur(20px);
+      border-bottom: 1px solid var(--border);
+      padding: 18px 60px;
       display: flex;
-      flex-direction: column;
+      justify-content: space-between;
+      align-items: center;
     }
 
-    /* ===== HEADER ===== */
-    header {
-      background: #111;
+    .logo {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 26px;
+      letter-spacing: 3px;
+      color: var(--sky);
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 36px;
+      align-items: center;
+      list-style: none;
+    }
+
+    .nav-links a {
+      color: var(--muted);
+      text-decoration: none;
+      font-size: 13px;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      transition: color 0.3s;
+    }
+
+    .nav-links a:hover { color: var(--sky); }
+
+    .nav-cta {
+      background: transparent;
+      border: 1px solid var(--sky);
+      color: var(--sky) !important;
+      padding: 8px 20px;
+      border-radius: 2px;
+      transition: all 0.3s !important;
+    }
+
+    .nav-cta:hover {
+      background: var(--sky) !important;
+      color: #000 !important;
+    }
+
+    /* === HERO BANNER === */
+    .hero-banner {
+      position: relative;
+      z-index: 1;
+      padding: 100px 60px 60px;
+      border-bottom: 1px solid var(--border);
+      overflow: hidden;
+    }
+
+    .hero-banner::after {
+      content: 'WORKS';
+      position: absolute;
+      right: -20px;
+      top: 50%;
+      transform: translateY(-50%);
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 220px;
+      color: rgba(135,206,235,0.03);
+      letter-spacing: -10px;
+      line-height: 1;
+      pointer-events: none;
+      user-select: none;
+    }
+
+    .hero-label {
+      font-size: 11px;
+      letter-spacing: 4px;
+      text-transform: uppercase;
+      color: var(--sky);
+      margin-bottom: 20px;
+      opacity: 0;
+      animation: fadeUp 0.6s ease forwards 0.1s;
+    }
+
+    .hero-title {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(60px, 10vw, 120px);
+      line-height: 0.9;
+      letter-spacing: 2px;
       color: #fff;
-      padding: 2rem 0 2.5rem;
-      text-align: center;
-      box-shadow: 0 2px 6px rgba(0,0,0,0.5);
+      margin-bottom: 30px;
+      opacity: 0;
+      animation: fadeUp 0.6s ease forwards 0.2s;
     }
 
-    header h1 {
-      font-size: 2.4rem;
-      margin-bottom: 0.3rem;
-    }
-    header p { color: #ccc; margin-bottom: 1.3rem; }
+    .hero-title span { color: var(--sky); }
 
-    .header-flex {
+    .hero-sub {
+      max-width: 480px;
+      font-size: 16px;
+      color: var(--muted);
+      line-height: 1.7;
+      opacity: 0;
+      animation: fadeUp 0.6s ease forwards 0.35s;
+    }
+
+    .hero-stats {
+      display: flex;
+      gap: 60px;
+      margin-top: 60px;
+      padding-top: 40px;
+      border-top: 1px solid var(--border);
+      opacity: 0;
+      animation: fadeUp 0.6s ease forwards 0.5s;
+    }
+
+    .stat-num {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 48px;
+      color: var(--sky);
+      line-height: 1;
+    }
+
+    .stat-label {
+      font-size: 11px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-top: 4px;
+    }
+
+    /* === FEATURED PROJECT (Brand Guardian AI) === */
+    .featured-section {
+      position: relative;
+      z-index: 1;
+      padding: 80px 60px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .section-label {
+      font-size: 11px;
+      letter-spacing: 4px;
+      text-transform: uppercase;
+      color: var(--sky);
+      margin-bottom: 40px;
       display: flex;
       align-items: center;
-      justify-content: space-between;
-      gap: 2rem;
-      flex-wrap: wrap;
-      max-width: 1000px;
-      margin: 0 auto;
-      padding: 0 1rem;
+      gap: 12px;
     }
 
-    .yuro-btn {
-      background: skyblue;
-      color: #000;
-      padding: 0.6rem 1.3rem;
-      border-radius: 6px;
-      text-decoration: none;
-      font-weight: 600;
-      transition: background 0.3s, color 0.3s;
-    }
-    .yuro-btn:hover {
-      background: #0ca4d8;
-      color: #fff;
+    .section-label::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: var(--border);
     }
 
-    .yuro-nav-link {
-      color: #eee;
-      text-decoration: none;
-      font-weight: 500;
-      font-size: 1.05rem;
-      padding: 0.4rem 0.8rem;
+    .featured-card {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
       border-radius: 4px;
-      transition: background 0.3s, color 0.3s;
-    }
-    .yuro-nav-link:hover {
-      background: skyblue;
-      color: #000;
-    }
-
-    @media (max-width: 700px) {
-      .header-flex { flex-direction: column; gap: 0.7rem; }
+      overflow: hidden;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      min-height: 440px;
+      transition: border-color 0.4s;
+      opacity: 0;
+      animation: fadeUp 0.7s ease forwards 0.1s;
     }
 
-    /* ===== PROJECTS ===== */
-    .projects-container {
+    .featured-card:hover { border-color: rgba(135,206,235,0.35); }
+
+    .featured-visual {
+      background: linear-gradient(135deg, #0a1628 0%, #0d2040 40%, #071520 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      overflow: hidden;
+      min-height: 300px;
+    }
+
+    .featured-visual::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(ellipse at 30% 50%, rgba(135,206,235,0.12) 0%, transparent 60%);
+    }
+
+    .featured-visual-icon {
+      position: relative;
+      z-index: 1;
+      text-align: center;
+    }
+
+    .ai-shield {
+      width: 120px;
+      height: 120px;
+      border: 2px solid rgba(135,206,235,0.4);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 16px;
+      position: relative;
+      animation: pulse-ring 3s ease infinite;
+    }
+
+    .ai-shield::before {
+      content: '';
+      position: absolute;
+      inset: -12px;
+      border: 1px solid rgba(135,206,235,0.15);
+      border-radius: 50%;
+      animation: pulse-ring 3s ease infinite 0.5s;
+    }
+
+    .ai-shield i {
+      font-size: 48px;
+      color: var(--sky);
+    }
+
+    .ai-label {
+      font-size: 12px;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: var(--sky);
+      opacity: 0.7;
+    }
+
+    .featured-content {
+      padding: 50px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    .project-num {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 13px;
+      letter-spacing: 3px;
+      color: var(--muted);
+      margin-bottom: 8px;
+    }
+
+    .featured-tag {
+      display: inline-block;
+      background: rgba(135,206,235,0.1);
+      border: 1px solid rgba(135,206,235,0.25);
+      color: var(--sky);
+      font-size: 10px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      padding: 4px 12px;
+      border-radius: 2px;
+      margin-bottom: 20px;
+    }
+
+    .featured-title {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 52px;
+      line-height: 0.95;
+      color: #fff;
+      letter-spacing: 1px;
+      margin-bottom: 20px;
+    }
+
+    .featured-desc {
+      font-size: 15px;
+      color: var(--muted);
+      line-height: 1.8;
+      margin-bottom: 30px;
+    }
+
+    .tech-stack {
       display: flex;
       flex-wrap: wrap;
-      justify-content: center;
-      gap: 2rem;
-      padding: 3rem 2rem;
-      background: #000;
+      gap: 8px;
+      margin-bottom: 36px;
+    }
+
+    .tech-tag {
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.08);
+      color: #aaa;
+      font-size: 11px;
+      padding: 4px 10px;
+      border-radius: 2px;
+      letter-spacing: 0.5px;
+    }
+
+    .project-links {
+      display: flex;
+      gap: 16px;
+    }
+
+    .btn-live {
+      background: var(--sky);
+      color: #000;
+      padding: 12px 28px;
+      text-decoration: none;
+      font-size: 12px;
+      font-weight: 500;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      border-radius: 2px;
+      transition: all 0.3s;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .btn-live:hover { background: #fff; transform: translateY(-2px); }
+
+    .btn-code {
+      background: transparent;
+      color: var(--muted);
+      padding: 12px 28px;
+      text-decoration: none;
+      font-size: 12px;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      border: 1px solid var(--border);
+      border-radius: 2px;
+      transition: all 0.3s;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .btn-code:hover { border-color: var(--sky); color: var(--sky); }
+
+    /* === PROJECT GRID === */
+    .projects-section {
+      position: relative;
+      z-index: 1;
+      padding: 80px 60px;
+    }
+
+    .projects-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+      gap: 1px;
+      background: var(--border);
+      border: 1px solid var(--border);
     }
 
     .project-card {
-      background: #fff;
-      border-radius: 10px;
-      box-shadow: 0 3px 10px rgba(0,0,0,0.6);
-      width: 320px;
-      padding: 1.6rem;
-      transition: transform 0.3s, box-shadow 0.3s;
-      color: #222;
-    }
-    .project-card:hover {
-      transform: translateY(-8px) scale(1.04);
-      box-shadow: 0 6px 20px rgba(0,0,0,0.7);
+      background: var(--card-bg);
+      padding: 40px;
+      transition: background 0.3s;
+      opacity: 0;
+      animation: fadeUp 0.6s ease forwards;
+      position: relative;
+      overflow: hidden;
     }
 
-    .project-title {
-      font-size: 1.3rem;
-      font-weight: 600;
-      margin-bottom: 0.5rem;
-      color: #000;
+    .project-card:nth-child(1) { animation-delay: 0.1s; }
+    .project-card:nth-child(2) { animation-delay: 0.2s; }
+    .project-card:nth-child(3) { animation-delay: 0.3s; }
+    .project-card:nth-child(4) { animation-delay: 0.4s; }
+    .project-card:nth-child(5) { animation-delay: 0.5s; }
+
+    .project-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 2px;
+      background: linear-gradient(90deg, transparent, var(--sky), transparent);
+      transform: scaleX(0);
+      transition: transform 0.4s ease;
     }
-    .project-description {
-      font-size: 1rem;
-      margin-bottom: 1rem;
-      color: #555;
+
+    .project-card:hover { background: #111; }
+    .project-card:hover::before { transform: scaleX(1); }
+
+    .card-num {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 12px;
+      letter-spacing: 3px;
+      color: rgba(135,206,235,0.4);
+      margin-bottom: 20px;
     }
-    .project-links a {
+
+    .card-icon {
+      width: 48px;
+      height: 48px;
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 24px;
+      color: var(--sky);
+      font-size: 20px;
+      transition: border-color 0.3s, background 0.3s;
+    }
+
+    .project-card:hover .card-icon {
+      border-color: rgba(135,206,235,0.4);
+      background: var(--sky-glow);
+    }
+
+    .card-title {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 28px;
+      letter-spacing: 1px;
+      color: #fff;
+      margin-bottom: 12px;
+      line-height: 1;
+    }
+
+    .card-desc {
+      font-size: 14px;
+      color: var(--muted);
+      line-height: 1.7;
+      margin-bottom: 28px;
+    }
+
+    .card-links {
+      display: flex;
+      gap: 20px;
+      align-items: center;
+    }
+
+    .card-link {
+      color: var(--sky);
       text-decoration: none;
-      color: skyblue;
-      margin-right: 1rem;
-      font-weight: 600;
+      font-size: 12px;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      transition: gap 0.3s;
     }
 
-    /* ===== FOOTER ===== */
-    footer {
-      background: #111;
-      color: #bbb;
+    .card-link:hover { gap: 10px; }
+    .card-link-muted { color: var(--muted) !important; }
+    .card-link-muted:hover { color: #aaa !important; }
+
+    /* === CTA STRIP === */
+    .cta-strip {
+      position: relative;
+      z-index: 1;
+      margin: 0 60px 80px;
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      padding: 60px;
+      background: linear-gradient(135deg, #0a0a0a 0%, #0d1a24 100%);
       text-align: center;
-      padding: 1.8rem 0;
-      margin-top: auto;
-      border-top: 1px solid #222;
+      overflow: hidden;
     }
-    footer a {
-      color: #ccc;
-      margin: 0 0.6rem;
-      text-decoration: none;
-      font-size: 1.2rem;
-      transition: color 0.3s;
+
+    .cta-strip::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 50%; transform: translateX(-50%);
+      width: 60%;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--sky), transparent);
     }
-    footer a:hover { color: skyblue; }
+
+    .cta-strip h2 {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 52px;
+      color: #fff;
+      letter-spacing: 2px;
+      margin-bottom: 16px;
+    }
+
+    .cta-strip p {
+      color: var(--muted);
+      font-size: 15px;
+      margin-bottom: 36px;
+    }
+
+    /* === FOOTER === */
+    footer {
+      background: #050505;
+      border-top: 1px solid var(--border);
+      padding: 40px 60px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      position: relative;
+      z-index: 1;
+    }
+
+    .footer-logo {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 22px;
+      letter-spacing: 3px;
+      color: var(--sky);
+    }
+
+    .footer-icons { display: flex; gap: 20px; }
+    .footer-icons a {
+      color: var(--muted);
+      font-size: 16px;
+      transition: color 0.3s, transform 0.3s;
+    }
+    .footer-icons a:hover { color: var(--sky); transform: translateY(-3px); }
+
+    .footer-copy {
+      font-size: 12px;
+      color: var(--muted);
+      letter-spacing: 0.5px;
+    }
+
+    /* === ANIMATIONS === */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(24px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes pulse-ring {
+      0%, 100% { box-shadow: 0 0 0 0 rgba(135,206,235,0.1); }
+      50%       { box-shadow: 0 0 0 16px rgba(135,206,235,0); }
+    }
+
+    /* === RESPONSIVE === */
+    @media (max-width: 900px) {
+      nav { padding: 16px 24px; }
+      .hero-banner, .featured-section, .projects-section { padding-left: 24px; padding-right: 24px; }
+      .featured-card { grid-template-columns: 1fr; }
+      .featured-visual { min-height: 200px; }
+      .cta-strip { margin: 0 24px 60px; padding: 40px 24px; }
+      footer { flex-direction: column; gap: 20px; text-align: center; padding: 30px 24px; }
+      .hero-stats { gap: 30px; flex-wrap: wrap; }
+      .nav-links { gap: 16px; }
+    }
   </style>
 </head>
 <body>
 
-<header>
-  <h1>My Projects</h1>
-  <p>Showcasing some of my best work</p>
+<div class="ambient"></div>
 
-  <div class="header-flex">
-    <a href="homepage.html" class="yuro-btn">Yuro Builds!</a>
-    <nav style="display:flex; gap:1.5rem;">
-      <a href="homepage.html" class="yuro-nav-link">Home</a>
-      <a href="Aboutme.html" class="yuro-nav-link">Contact</a>
-    </nav>
+<!-- NAV -->
+<nav>
+  <div class="logo">Yuro Builds</div>
+  <ul class="nav-links">
+    <li><a href="index.html">Home</a></li>
+    <li><a href="Aboutme.html">About</a></li>
+    <li><a href="Aboutme.html#contact" class="nav-cta">Hire Me</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section class="hero-banner">
+  <p class="hero-label">Selected Works · 2022 – 2025</p>
+  <h1 class="hero-title">Built to<br><span>Perform.</span></h1>
+  <p class="hero-sub">A curated collection of projects spanning AI, full-stack web development, and client solutions — engineered for real-world impact.</p>
+  <div class="hero-stats">
+    <div>
+      <div class="stat-num">6+</div>
+      <div class="stat-label">Projects Shipped</div>
+    </div>
+    <div>
+      <div class="stat-num">3</div>
+      <div class="stat-label">Live Client Sites</div>
+    </div>
+    <div>
+      <div class="stat-num">2+</div>
+      <div class="stat-label">Years Building</div>
+    </div>
   </div>
-</header>
+</section>
 
-<main id="projects">
-  <section class="projects-container">
-    <div class="project-card">
-      <div class="project-title"></div>
-      <img src="project1.png" alt="">
-      <div class="project-description">
-        An online bakery website I developed for a client, featuring a user-friendly interface and seamless shopping experience.
+<!-- FEATURED: BRAND GUARDIAN AI -->
+<section class="featured-section">
+  <div class="section-label">Featured Project</div>
+  <div class="featured-card">
+    <div class="featured-visual">
+      <div class="featured-visual-icon">
+        <div class="ai-shield">
+          <i class="fa-solid fa-shield-halved"></i>
+        </div>
+        <div class="ai-label">AI · Sentiment · Guardian</div>
+      </div>
+    </div>
+    <div class="featured-content">
+      <div class="project-num">01 / FEATURED</div>
+      <span class="featured-tag">AI · Machine Learning</span>
+      <h2 class="featured-title">Brand Guardian AI</h2>
+      <p class="featured-desc">
+        An intelligent brand protection system that monitors social media in real time, using sentiment analysis and NLP to detect threats to brand reputation before they escalate. Compares post patterns to predict happiness and brand perception at scale.
+      </p>
+      <div class="tech-stack">
+        <span class="tech-tag">Python</span>
+        <span class="tech-tag">Machine Learning</span>
+        <span class="tech-tag">NLP</span>
+        <span class="tech-tag">Sentiment Analysis</span>
+        <span class="tech-tag">HTML/CSS/JS</span>
       </div>
       <div class="project-links">
-        <a href="https://tiramisubakery.co.ke/" target="_blank">Live Demo</a>
-        <a href="#" target="_blank">Source Code</a>
+        <a href="https://github.com/Alexxongithub/-Predicting-Happiness-Index-from-Digital-and-Lifestyle-Habits-Using-Machine-Learning-/blob/main/index.html" target="_blank" class="btn-live">
+          <i class="fa-solid fa-arrow-up-right-from-square"></i> Live Demo
+        </a>
+        <a href="#" target="_blank" class="btn-code">
+          <i class="fab fa-github"></i> Source Code
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PROJECT GRID -->
+<section class="projects-section">
+  <div class="section-label">All Projects</div>
+  <div class="projects-grid" id="projectsGrid">
+
+    <!-- Tiramisu Bakery -->
+    <div class="project-card">
+      <div class="card-num">02</div>
+      <div class="card-icon"><i class="fa-solid fa-cake-candles"></i></div>
+      <div class="card-title">Tiramisu Bakery</div>
+      <div class="card-desc">A full e-commerce bakery site built for a client with a clean UI, smooth shopping flow, and optimised for conversions. Live in production.</div>
+      <div class="card-links">
+        <a href="https://tiramisubakery.co.ke/" target="_blank" class="card-link">
+          Live Demo <i class="fa-solid fa-arrow-right"></i>
+        </a>
+        <a href="#" target="_blank" class="card-link card-link-muted">
+          <i class="fab fa-github"></i> Code
+        </a>
+      </div>
+    </div>
+
+    <!-- Portfolio Site -->
+    <div class="project-card">
+      <div class="card-num">03</div>
+      <div class="card-icon"><i class="fa-solid fa-user-astronaut"></i></div>
+      <div class="card-title">This Portfolio</div>
+      <div class="card-desc">My personal developer portfolio  designed from scratch to showcase work, personality, and technical range. What you're looking at right now.</div>
+      <div class="card-links">
+        <a href="https://yuro-builds.vercel.app/" target="_blank" class="card-link">
+          Live Demo <i class="fa-solid fa-arrow-right"></i>
+        </a>
+        <a href="#" target="_blank" class="card-link card-link-muted">
+          <i class="fab fa-github"></i> Code
+        </a>
+      </div>
+    </div>
+
+    <!-- Placeholder cards -->
+    <div class="project-card">
+      <div class="card-num">04</div>
+      <div class="card-icon"><i class="fa-solid fa-code-branch"></i></div>
+      <div class="card-title">Project Four</div>
+      <div class="card-desc">Details coming soon. Something exciting is in the works — stay tuned.</div>
+      <div class="card-links">
+        <a href="#" class="card-link card-link-muted">Coming Soon <i class="fa-solid fa-clock"></i></a>
       </div>
     </div>
 
     <div class="project-card">
-      <div class="project-title"></div>
-      <img src="portfolio.png" alt="">
-      <div class="project-description">
-        My own portfolio website, this current  one which I use to display all my completed works, progress and accomplishments.
-      </div>
-      <div class="project-links">
-        <a href="https://yuro-builds.vercel.app/" target="_blank">Live Demo</a>
-        <a href="#" target="_blank">Source Code</a>
+      <div class="card-num">05</div>
+      <div class="card-icon"><i class="fa-solid fa-layer-group"></i></div>
+      <div class="card-title">Project Five</div>
+      <div class="card-desc">Currently in development. Details will be added shortly.</div>
+      <div class="card-links">
+        <a href="#" class="card-link card-link-muted">Coming Soon <i class="fa-solid fa-clock"></i></a>
       </div>
     </div>
 
     <div class="project-card">
-      <div class="project-title"></div>
-      <div class="project-description">
-        An AI happiness predictor app that compares social media posts to predict user happiness levels using sentiment analysis.
-      </div>
-      <div class="project-links">
-        <a href="https://github.com/Alexxongithub/-Predicting-Happiness-Index-from-Digital-and-Lifestyle-Habits-Using-Machine-Learning-/blob/main/index.html" target="_blank">Live Demo</a>
-        <a href="#" target="_blank">Source Code</a>
+      <div class="card-num">06</div>
+      <div class="card-icon"><i class="fa-solid fa-rocket"></i></div>
+      <div class="card-title">Project Six</div>
+      <div class="card-desc">More to be revealed. Building something worth waiting for.</div>
+      <div class="card-links">
+        <a href="#" class="card-link card-link-muted">Coming Soon <i class="fa-solid fa-clock"></i></a>
       </div>
     </div>
-  </section>
-</main>
 
+  </div>
+</section>
+
+<!-- CTA STRIP -->
+<div class="cta-strip">
+  <h2>Got a Project in Mind?</h2>
+  <p>Let's build something that makes your clients stop scrolling.</p>
+  <a href="Aboutme.html#contact" class="btn-live">Start a Conversation <i class="fa-solid fa-arrow-right"></i></a>
+</div>
+
+<!-- FOOTER -->
 <footer>
-  <div style="margin-bottom:1rem;">
+  <div class="footer-logo">Yuro Builds</div>
+  <div class="footer-icons">
     <a href="https://github.com/YURO-1" target="_blank"><i class="fab fa-github"></i></a>
     <a href="https://www.linkedin.com/in/yuro-aungo-383890269/" target="_blank"><i class="fab fa-linkedin"></i></a>
     <a href="mailto:yuroaungo533@gmail.com"><i class="fa-solid fa-envelope"></i></a>
   </div>
-  <div style="margin-bottom:1rem; font-size:1.1rem;">
-    More to be added soon
-  </div>
-  <div style="font-size:0.95rem;">
-    &copy; 2025 Yuro. All rights reserved.
-  </div>
+  <div class="footer-copy">&copy; 2025 Yuro Aungo · All rights reserved.</div>
 </footer>
-
-<script>
-  // Add extra project cards dynamically
-  const projectsContainer = document.querySelector('.projects-container');
-  const extraProjects = [
-    { title: "Project Four", description: "To be updated accordingly.", demo: "#", code: "#" },
-    { title: "Project Five", description: "To be updated as soon as possible.", demo: "#", code: "#" },
-    { title: "Project Six", description: "To be updated accordingly.", demo: "#", code: "#" }
-  ];
-  extraProjects.forEach(p => {
-    const card = document.createElement('div');
-    card.className = 'project-card';
-    card.innerHTML = `
-      <div class="project-title">${p.title}</div>
-      <div class="project-description">${p.description}</div>
-      <div class="project-links">
-        <a href="${p.demo}" target="_blank">Live Demo</a>
-        <a href="${p.code}" target="_blank">Source Code</a>
-      </div>
-    `;
-    projectsContainer.appendChild(card);
-  });
-</script>
 
 </body>
 </html>

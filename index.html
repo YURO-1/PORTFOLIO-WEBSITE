@@ -2,109 +2,989 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Yuro's Portfolio</title>
+  <title>Yuro Builds | Software Engineer</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-  <link rel="stylesheet" href="homepage.css">
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --sky: #87CEEB;
+      --sky-bright: #38bdf8;
+      --sky-glow: rgba(135,206,235,0.15);
+      --black: #000;
+      --dark: #0a0a0a;
+      --card-bg: #0f0f0f;
+      --border: rgba(135,206,235,0.12);
+      --text: #e8e8e8;
+      --muted: #777;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--black);
+      color: var(--text);
+      font-family: 'DM Sans', sans-serif;
+      font-weight: 300;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    /* === NOISE OVERLAY === */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+      pointer-events: none;
+      z-index: 0;
+      opacity: 0.4;
+    }
+
+    /* === AMBIENT GLOWS === */
+    .ambient-left {
+      position: fixed;
+      width: 700px; height: 700px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(135,206,235,0.05) 0%, transparent 70%);
+      top: -200px; left: -300px;
+      pointer-events: none; z-index: 0;
+    }
+    .ambient-right {
+      position: fixed;
+      width: 500px; height: 500px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(135,206,235,0.04) 0%, transparent 70%);
+      bottom: -100px; right: -200px;
+      pointer-events: none; z-index: 0;
+    }
+
+    /* === NAV === */
+    nav {
+      position: sticky;
+      top: 0; z-index: 100;
+      background: rgba(0,0,0,0.85);
+      backdrop-filter: blur(20px);
+      border-bottom: 1px solid var(--border);
+      padding: 18px 60px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .logo {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 24px;
+      letter-spacing: 3px;
+      color: var(--sky);
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 36px;
+      align-items: center;
+      list-style: none;
+    }
+
+    .nav-links a {
+      color: var(--muted);
+      text-decoration: none;
+      font-size: 13px;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      transition: color 0.3s;
+    }
+    .nav-links a:hover { color: var(--sky); }
+
+    .nav-cta {
+      background: transparent;
+      border: 1px solid var(--sky) !important;
+      color: var(--sky) !important;
+      padding: 8px 20px;
+      border-radius: 2px;
+      transition: all 0.3s !important;
+    }
+    .nav-cta:hover {
+      background: var(--sky) !important;
+      color: #000 !important;
+    }
+
+    .nav-social { display: flex; gap: 16px; }
+    .nav-social a {
+      color: var(--muted);
+      font-size: 16px;
+      transition: color 0.3s, transform 0.3s;
+    }
+    .nav-social a:hover { color: var(--sky); transform: translateY(-2px); }
+
+    /* === HERO === */
+    .hero {
+      position: relative; z-index: 1;
+      min-height: calc(100vh - 61px);
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      align-items: center;
+      padding: 80px 60px;
+      border-bottom: 1px solid var(--border);
+      overflow: hidden;
+    }
+
+    /* Diagonal grid lines background */
+    .hero::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(135,206,235,0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(135,206,235,0.03) 1px, transparent 1px);
+      background-size: 60px 60px;
+      pointer-events: none;
+    }
+
+    .hero-left { position: relative; z-index: 1; }
+
+    .hero-eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 11px;
+      letter-spacing: 4px;
+      text-transform: uppercase;
+      color: var(--sky);
+      margin-bottom: 28px;
+      opacity: 0;
+      animation: fadeUp 0.6s ease forwards 0.1s;
+    }
+
+    .hero-eyebrow::before {
+      content: '';
+      width: 24px; height: 1px;
+      background: var(--sky);
+    }
+
+    .hero-title {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(56px, 7vw, 100px);
+      line-height: 0.92;
+      letter-spacing: 1px;
+      color: #fff;
+      margin-bottom: 32px;
+      opacity: 0;
+      animation: fadeUp 0.6s ease forwards 0.2s;
+    }
+
+    .hero-title .accent { color: var(--sky); }
+
+    .hero-title .outline {
+      -webkit-text-stroke: 1px rgba(135,206,235,0.5);
+      color: transparent;
+    }
+
+    .hero-desc {
+      font-size: 15px;
+      color: var(--muted);
+      line-height: 1.8;
+      max-width: 440px;
+      margin-bottom: 44px;
+      opacity: 0;
+      animation: fadeUp 0.6s ease forwards 0.3s;
+    }
+
+    .hero-desc strong { color: #ccc; font-weight: 500; }
+
+    /* === EMAIL FORM === */
+    .hero-form {
+      display: flex;
+      gap: 0;
+      max-width: 440px;
+      opacity: 0;
+      animation: fadeUp 0.6s ease forwards 0.4s;
+    }
+
+    .hero-form input {
+      flex: 1;
+      background: rgba(255,255,255,0.04);
+      border: 1px solid var(--border);
+      border-right: none;
+      color: var(--text);
+      padding: 14px 20px;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 14px;
+      border-radius: 2px 0 0 2px;
+      outline: none;
+      transition: border-color 0.3s;
+    }
+    .hero-form input::placeholder { color: var(--muted); }
+    .hero-form input:focus { border-color: rgba(135,206,235,0.4); }
+
+    .hero-form button {
+      background: var(--sky);
+      color: #000;
+      border: none;
+      padding: 14px 24px;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 12px;
+      font-weight: 500;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      cursor: pointer;
+      border-radius: 0 2px 2px 0;
+      transition: background 0.3s, transform 0.2s;
+      white-space: nowrap;
+    }
+    .hero-form button:hover { background: #fff; }
+
+    .hero-pills {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 32px;
+      opacity: 0;
+      animation: fadeUp 0.6s ease forwards 0.5s;
+    }
+
+    .pill {
+      background: rgba(255,255,255,0.03);
+      border: 1px solid var(--border);
+      color: var(--muted);
+      font-size: 11px;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      padding: 6px 14px;
+      border-radius: 100px;
+    }
+
+    /* === HERO RIGHT — AVATAR === */
+    .hero-right {
+      position: relative; z-index: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .avatar-frame {
+      position: relative;
+      width: 340px; height: 340px;
+    }
+
+    /* Rotating ring */
+    .avatar-frame::before {
+      content: '';
+      position: absolute;
+      inset: -20px;
+      border-radius: 50%;
+      border: 1px solid rgba(135,206,235,0.15);
+      animation: spin 20s linear infinite;
+    }
+
+    .avatar-frame::after {
+      content: '';
+      position: absolute;
+      inset: -40px;
+      border-radius: 50%;
+      border: 1px dashed rgba(135,206,235,0.07);
+      animation: spin 35s linear infinite reverse;
+    }
+
+    .avatar-circle {
+      width: 100%; height: 100%;
+      border-radius: 50%;
+      overflow: hidden;
+      border: 2px solid rgba(135,206,235,0.2);
+      background: linear-gradient(135deg, #0a1628, #071520);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+    }
+
+    .avatar-circle img {
+      width: 100%; height: 100%;
+      object-fit: cover;
+      opacity: 0;
+      animation: fadeIn 0.8s ease forwards 0.6s;
+    }
+
+    /* Floating stat badges */
+    .badge {
+      position: absolute;
+      background: rgba(10,10,10,0.95);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      padding: 10px 16px;
+      font-size: 12px;
+      color: var(--text);
+      backdrop-filter: blur(10px);
+      opacity: 0;
+      animation: fadeIn 0.6s ease forwards;
+    }
+
+    .badge-num {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 28px;
+      color: var(--sky);
+      line-height: 1;
+    }
+
+    .badge-label {
+      font-size: 10px;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+
+    .badge-tl { top: 10px; left: -60px; animation-delay: 0.8s; }
+    .badge-br { bottom: 20px; right: -50px; animation-delay: 1s; }
+
+    /* === TICKER === */
+    .ticker-wrap {
+      position: relative; z-index: 1;
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+      overflow: hidden;
+      padding: 14px 0;
+      background: rgba(135,206,235,0.02);
+    }
+
+    .ticker-track {
+      display: flex;
+      gap: 0;
+      animation: ticker 25s linear infinite;
+      white-space: nowrap;
+    }
+
+    .ticker-item {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 13px;
+      letter-spacing: 3px;
+      color: var(--muted);
+      padding: 0 40px;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .ticker-dot {
+      width: 4px; height: 4px;
+      border-radius: 50%;
+      background: var(--sky);
+      opacity: 0.5;
+    }
+
+    /* === TEASER SECTION === */
+    .teaser-section {
+      position: relative; z-index: 1;
+      padding: 80px 60px;
+      border-bottom: 1px solid var(--border);
+      overflow: hidden;
+    }
+
+    .section-label {
+      font-size: 11px;
+      letter-spacing: 4px;
+      text-transform: uppercase;
+      color: var(--sky);
+      margin-bottom: 10px;
+    }
+
+    .section-title {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 52px;
+      letter-spacing: 1px;
+      color: #fff;
+      line-height: 1;
+    }
+
+    .section-link {
+      color: var(--sky);
+      text-decoration: none;
+      font-size: 12px;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      transition: gap 0.3s;
+    }
+    .section-link:hover { gap: 14px; }
+
+    .teaser-inner {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 60px;
+      align-items: center;
+    }
+
+    .teaser-left { }
+
+    .teaser-headline {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(48px, 6vw, 80px);
+      line-height: 0.92;
+      color: #fff;
+      letter-spacing: 1px;
+      margin-bottom: 24px;
+    }
+
+    .teaser-headline .sky { color: var(--sky); }
+    .teaser-headline .outline {
+      -webkit-text-stroke: 1px rgba(135,206,235,0.4);
+      color: transparent;
+    }
+
+    .teaser-body {
+      font-size: 15px;
+      color: var(--muted);
+      line-height: 1.8;
+      margin-bottom: 36px;
+      max-width: 400px;
+    }
+
+    .teaser-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+      background: var(--sky);
+      color: #000;
+      padding: 16px 36px;
+      text-decoration: none;
+      font-size: 12px;
+      font-weight: 500;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      border-radius: 2px;
+      transition: all 0.3s;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .teaser-btn::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: #fff;
+      transform: translateX(-100%);
+      transition: transform 0.3s ease;
+    }
+
+    .teaser-btn:hover::before { transform: translateX(0); }
+    .teaser-btn span, .teaser-btn i { position: relative; z-index: 1; }
+
+    /* Preview cards stack */
+    .teaser-right {
+      position: relative;
+      height: 360px;
+    }
+
+    .preview-card {
+      position: absolute;
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      padding: 24px 28px;
+      width: 280px;
+      transition: transform 0.4s ease, box-shadow 0.4s;
+      cursor: default;
+    }
+
+    .preview-card:hover {
+      transform: translateY(-6px) !important;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.6);
+      border-color: rgba(135,206,235,0.3);
+      z-index: 10;
+    }
+
+    .preview-card:nth-child(1) {
+      top: 0; left: 0;
+      transform: rotate(-4deg);
+      z-index: 1;
+    }
+    .preview-card:nth-child(2) {
+      top: 40px; left: 60px;
+      transform: rotate(-1deg);
+      z-index: 2;
+    }
+    .preview-card:nth-child(3) {
+      top: 80px; left: 120px;
+      transform: rotate(2deg);
+      z-index: 3;
+    }
+
+    .pc-tag {
+      font-size: 10px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--sky);
+      margin-bottom: 10px;
+      opacity: 0.7;
+    }
+
+    .pc-title {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 22px;
+      color: #fff;
+      letter-spacing: 0.5px;
+      margin-bottom: 6px;
+    }
+
+    .pc-desc {
+      font-size: 12px;
+      color: var(--muted);
+      line-height: 1.6;
+    }
+
+    .pc-dot {
+      width: 6px; height: 6px;
+      border-radius: 50%;
+      background: var(--sky);
+      margin-top: 16px;
+      opacity: 0.5;
+    }
+
+    /* === ABOUT STRIP === */
+    .about-strip {
+      position: relative; z-index: 1;
+      margin: 0 60px;
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      overflow: hidden;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+    }
+
+    .about-left {
+      padding: 60px;
+      border-right: 1px solid var(--border);
+    }
+
+    .about-right {
+      padding: 60px;
+      background: rgba(135,206,235,0.02);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    .skill-row {
+      margin-bottom: 20px;
+    }
+
+    .skill-name {
+      font-size: 12px;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 8px;
+      display: flex;
+      justify-content: space-between;
+    }
+
+    .skill-name span { color: var(--sky); }
+
+    .skill-bar {
+      height: 2px;
+      background: rgba(255,255,255,0.05);
+      border-radius: 2px;
+      overflow: hidden;
+    }
+
+    .skill-fill {
+      height: 100%;
+      background: linear-gradient(90deg, var(--sky), var(--sky-bright));
+      border-radius: 2px;
+      transform: scaleX(0);
+      transform-origin: left;
+      animation: fillBar 1s ease forwards;
+    }
+
+    .skill-row:nth-child(1) .skill-fill { animation-delay: 0.2s; width: 92%; }
+    .skill-row:nth-child(2) .skill-fill { animation-delay: 0.35s; width: 88%; }
+    .skill-row:nth-child(3) .skill-fill { animation-delay: 0.5s; width: 85%; }
+    .skill-row:nth-child(4) .skill-fill { animation-delay: 0.65s; width: 80%; }
+    .skill-row:nth-child(5) .skill-fill { animation-delay: 0.8s; width: 78%; }
+
+    /* === CTA STRIP === */
+    .cta-strip {
+      position: relative; z-index: 1;
+      margin: 60px 60px 80px;
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      padding: 70px 60px;
+      background: linear-gradient(135deg, #0a0a0a 0%, #0d1a24 100%);
+      text-align: center;
+      overflow: hidden;
+    }
+
+    .cta-strip::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 50%; transform: translateX(-50%);
+      width: 60%; height: 1px;
+      background: linear-gradient(90deg, transparent, var(--sky), transparent);
+    }
+
+    .cta-strip h2 {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 56px;
+      color: #fff;
+      letter-spacing: 2px;
+      margin-bottom: 16px;
+    }
+
+    .cta-strip p {
+      color: var(--muted);
+      font-size: 15px;
+      margin-bottom: 36px;
+      max-width: 400px;
+      margin-left: auto; margin-right: auto;
+      line-height: 1.7;
+    }
+
+    .btn-primary {
+      background: var(--sky);
+      color: #000;
+      padding: 14px 32px;
+      text-decoration: none;
+      font-size: 12px;
+      font-weight: 500;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      border-radius: 2px;
+      transition: all 0.3s;
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .btn-primary:hover { background: #fff; transform: translateY(-2px); }
+
+    /* === FOOTER === */
+    footer {
+      background: #050505;
+      border-top: 1px solid var(--border);
+      padding: 40px 60px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      position: relative; z-index: 1;
+    }
+
+    .footer-logo {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 22px;
+      letter-spacing: 3px;
+      color: var(--sky);
+    }
+
+    .footer-icons { display: flex; gap: 20px; }
+    .footer-icons a {
+      color: var(--muted);
+      font-size: 16px;
+      transition: color 0.3s, transform 0.3s;
+    }
+    .footer-icons a:hover { color: var(--sky); transform: translateY(-3px); }
+
+    .footer-copy { font-size: 12px; color: var(--muted); letter-spacing: 0.5px; }
+
+    /* === POPUP === */
+    .popup-overlay {
+      display: none;
+      position: fixed; inset: 0; z-index: 999;
+      background: rgba(0,0,0,0.8);
+      backdrop-filter: blur(8px);
+      align-items: center;
+      justify-content: center;
+    }
+    .popup-overlay.active { display: flex; }
+
+    .popup-box {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      padding: 48px;
+      max-width: 400px;
+      text-align: center;
+    }
+
+    .popup-box p {
+      font-size: 16px;
+      color: var(--text);
+      margin-bottom: 28px;
+      line-height: 1.7;
+    }
+
+    .popup-box button {
+      background: var(--sky);
+      color: #000;
+      border: none;
+      padding: 12px 32px;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 12px;
+      font-weight: 500;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      border-radius: 2px;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+    .popup-box button:hover { background: #fff; }
+
+    /* === ANIMATIONS === */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(24px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to   { opacity: 1; }
+    }
+
+    @keyframes spin {
+      from { transform: rotate(0deg); }
+      to   { transform: rotate(360deg); }
+    }
+
+    @keyframes ticker {
+      from { transform: translateX(0); }
+      to   { transform: translateX(-50%); }
+    }
+
+    @keyframes fillBar {
+      to { transform: scaleX(1); }
+    }
+
+    /* === RESPONSIVE === */
+    @media (max-width: 960px) {
+      nav { padding: 16px 24px; }
+      .hero { grid-template-columns: 1fr; padding: 60px 24px; text-align: center; min-height: auto; }
+      .hero-eyebrow { justify-content: center; }
+      .hero-desc { margin: 0 auto 36px; }
+      .hero-form { margin: 0 auto; }
+      .hero-pills { justify-content: center; }
+      .hero-right { margin-top: 60px; }
+      .badge-tl { left: -20px; }
+      .badge-br { right: -20px; }
+      .teaser-section { padding: 60px 24px; }
+      .teaser-inner { grid-template-columns: 1fr; }
+      .teaser-right { height: 280px; margin-top: 20px; }
+      .about-strip { margin: 0 24px; grid-template-columns: 1fr; }
+      .about-left { border-right: none; border-bottom: 1px solid var(--border); }
+      .cta-strip { margin: 40px 24px 60px; padding: 48px 24px; }
+      footer { flex-direction: column; gap: 20px; text-align: center; padding: 30px 24px; }
+    }
+  </style>
 </head>
-
 <body>
-  <!-- HEADER -->
-  <header>
-    <div class="logo">YURO BUILDS!</div>
-    <nav>
-      <ul id="navbar">
-        <li><a href="projects.html">Works</a></li>
-        <li><a href="Aboutme.html">Contact</a></li>
-      </ul>
-    </nav>
-    <div class="social-icons">
-      <a href="https://github.com/YURO-1" target="_blank"><i class="fab fa-github"></i></a>
-      <a href="https://www.linkedin.com/in/yuro-aungo-383890269/" target="_blank"><i class="fab fa-linkedin"></i></a>
-      <a href="mailto:yuroaungo533@gmail.com" target="_blank"><i class="fa-solid fa-envelope"></i></a>
-    </div>
-  </header>
 
-  <!-- HERO -->
-  <section class="hero">
-    <div class="hero-text">
-      <h1>Solving modern problems one <span>Code</span><br> at a time.</h1>
-      <p>
-        Hi, I’m <strong>Yuro Aungo</strong>, a Software Engineer and Modern Systems Developer.<br>
-        I specialize in <b>Distributed Systems</b>, <b>Applied AI</b>, <b>Web Development</b>, and <b>Mobile App Development</b>.
-      </p>
+<div class="ambient-left"></div>
+<div class="ambient-right"></div>
 
-      <!-- FORM -->
-      <form id="contact-form" class="cta-form" onsubmit="sendEmail(event)">
-        <input type="email" name="user_email" placeholder="Enter your email" required>
-        <button type="submit">Connect With Me</button>
-      </form>
-    </div>
+<!-- NAV -->
+<nav>
+  <div class="logo">Yuro Builds</div>
+  <ul class="nav-links">
+    <li><a href="projects.html">Works</a></li>
+    <li><a href="Aboutme.html">About</a></li>
+    <li><a href="Aboutme.html#contact" class="nav-cta">Hire Me</a></li>
+  </ul>
+  <div class="nav-social">
+    <a href="https://github.com/YURO-1" target="_blank"><i class="fab fa-github"></i></a>
+    <a href="https://www.linkedin.com/in/yuro-aungo-383890269/" target="_blank"><i class="fab fa-linkedin"></i></a>
+    <a href="mailto:yuroaungo533@gmail.com"><i class="fa-solid fa-envelope"></i></a>
+  </div>
+</nav>
 
-    <!-- RIGHT SIDE -->
-    <div class="hero-image">
-      <div class="avatar-wrapper">
-        <img src="https://i.ibb.co/7tGKGvb/avatar.png" alt="Profile Avatar" class="avatar">
-      </div>
-    </div>
-  </section>
-
-  <!-- WORKS -->
-  <section class="works" id="works">
-    <h2>Completed Works</h2>
-    <div class="works-grid">
-      <a href="https://tiramisubakery.co.ke/" target="_blank" class="work-card">
-        <img src="project1.png" alt="Project 1">
-        <h3>Online Bakery Website</h3>
-        <p>A bakery website I built for one of my clients.</p>
-      </a>
-
-      <a href="https://github.com/YURO-1/ADLIFE-PLAZA" target="_blank" class="work-card">
-        <img src="project2.jpg" alt="Project 2">
-        <h3>ADLIFE-PLAZA</h3>
-        <p>A distributed system for patient records & doctor queue management through the use of servers.</p>
-      </a>
-
-      <a href="https://github.com/yourusername/ai-chatbot" target="_blank" class="work-card">
-        <img src="project3.jpg" alt="Project 3">
-        <h3>ANITA The Receptionist</h3>
-        <p>An AI agent which reads through clients emails and schedules meetings with them based on your schedule.</p>
-      </a>
-    </div>
-  </section>
-
-  <!-- CUSTOM POPUP -->
-  <div id="popup" class="popup-overlay">
-    <div class="popup-box">
-      <p id="popup-message"></p>
-      <button onclick="closeModal()">OK</button>
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-left">
+    <div class="hero-eyebrow">Available for Work · Nairobi, Kenya</div>
+    <h1 class="hero-title">
+      Solving<br>
+      <span class="accent">Modern</span><br>
+      <span class="outline">Problems.</span>
+    </h1>
+    <p class="hero-desc">
+      Hi, I'm <strong>Yuro Aungo</strong> , a Software Engineer building scalable systems at the intersection of
+      <strong>Distributed Systems</strong>, <strong>Applied AI</strong>, and modern web & mobile development.
+    </p>
+    <form class="hero-form" id="contact-form" onsubmit="sendEmail(event)">
+      <input type="email" name="user_email" placeholder="your@email.com" required>
+      <button type="submit">Connect With Me</button>
+    </form>
+    <div class="hero-pills">
+      <span class="pill">Full-Stack Dev</span>
+      <span class="pill">Applied AI</span>
+      <span class="pill">Distributed Systems</span>
+      <span class="pill">Mobile Apps</span>
     </div>
   </div>
 
-  <!-- FOOTER -->
-  <footer>
-    &copy; 2025 Yuro. All rights reserved.
-  </footer>
+  <div class="hero-right">
+    <div class="avatar-frame">
+      <div class="avatar-circle">
+        <img src="https://i.ibb.co/7tGKGvb/avatar.png" alt="Yuro Aungo">
+      </div>
+      <div class="badge badge-tl">
+        <div class="badge-num">3+</div>
+        <div class="badge-label">Years Building</div>
+      </div>
+      <div class="badge badge-br">
+        <div class="badge-num">6+</div>
+        <div class="badge-label">Projects Shipped</div>
+      </div>
+    </div>
+  </div>
+</section>
 
-  <!-- EMAILJS LIBRARY -->
-  <script
-    type="text/javascript"
-    src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js">
-  </script>
+<!-- TICKER -->
+<div class="ticker-wrap">
+  <div class="ticker-track">
+    <span class="ticker-item">JavaScript <span class="ticker-dot"></span></span>
+    <span class="ticker-item">Python <span class="ticker-dot"></span></span>
+    <span class="ticker-item">Java <span class="ticker-dot"></span></span>
+    <span class="ticker-item">React <span class="ticker-dot"></span></span>
+    <span class="ticker-item">Node.js <span class="ticker-dot"></span></span>
+    <span class="ticker-item">Spring Boot <span class="ticker-dot"></span></span>
+    <span class="ticker-item">Django <span class="ticker-dot"></span></span>
+    <span class="ticker-item">Docker <span class="ticker-dot"></span></span>
+    <span class="ticker-item">AWS <span class="ticker-dot"></span></span>
+    <span class="ticker-item">MySQL <span class="ticker-dot"></span></span>
+    <span class="ticker-item">Machine Learning <span class="ticker-dot"></span></span>
+    <span class="ticker-item">OAuth2 <span class="ticker-dot"></span></span>
+    <!-- Duplicate for seamless loop -->
+    <span class="ticker-item">JavaScript <span class="ticker-dot"></span></span>
+    <span class="ticker-item">Python <span class="ticker-dot"></span></span>
+    <span class="ticker-item">Java <span class="ticker-dot"></span></span>
+    <span class="ticker-item">React <span class="ticker-dot"></span></span>
+    <span class="ticker-item">Node.js <span class="ticker-dot"></span></span>
+    <span class="ticker-item">Spring Boot <span class="ticker-dot"></span></span>
+    <span class="ticker-item">Django <span class="ticker-dot"></span></span>
+    <span class="ticker-item">Docker <span class="ticker-dot"></span></span>
+    <span class="ticker-item">AWS <span class="ticker-dot"></span></span>
+    <span class="ticker-item">MySQL <span class="ticker-dot"></span></span>
+    <span class="ticker-item">Machine Learning <span class="ticker-dot"></span></span>
+    <span class="ticker-item">OAuth2 <span class="ticker-dot"></span></span>
+  </div>
+</div>
 
-  <!-- EMAILJS INIT -->
-  <script type="text/javascript">
-    (function () {
-      emailjs.init({
-        publicKey: "JtvOXprwmXKBUkspm",
-      });
-    })();
-  </script>
+<!-- WORKS TEASER -->
+<section class="teaser-section">
+  <div class="teaser-inner">
+    <div class="teaser-left">
+      <div class="section-label" style="margin-bottom:16px;">Selected Works</div>
+      <div class="teaser-headline">
+        Work That<br>
+        <span class="sky">Speaks</span><br>
+        <span class="outline">For Itself.</span>
+      </div>
+      <p class="teaser-body">
+        From AI agents to live client sites ,each project is a problem solved, a system built, and a result delivered. No filler. No concept work.
+      </p>
+      <a href="projects.html" class="teaser-btn">
+        <span>See All Projects</span>
+        <i class="fa-solid fa-arrow-right"></i>
+      </a>
+    </div>
 
-  <!-- YOUR SCRIPT (loads LAST so EmailJS is ready) -->
-  <script src="script.js"></script>
+    <div class="teaser-right">
+      <div class="preview-card">
+        <div class="pc-tag">AI · Machine Learning</div>
+        <div class="pc-title">Brand Guardian AI</div>
+        <div class="pc-desc">Real-time brand protection using NLP & sentiment analysis.</div>
+        <div class="pc-dot"></div>
+      </div>
+      <div class="preview-card">
+        <div class="pc-tag">Full-Stack · Client Work</div>
+        <div class="pc-title">Tiramisu Bakery</div>
+        <div class="pc-desc">Live e-commerce site built, deployed, and converting.</div>
+        <div class="pc-dot"></div>
+      </div>
+      <div class="preview-card">
+        <div class="pc-tag">Distributed Systems</div>
+        <div class="pc-title">ADLIFE Plaza</div>
+        <div class="pc-desc">Patient records & queue management at scale.</div>
+        <div class="pc-dot"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ABOUT + SKILLS STRIP -->
+<div class="about-strip">
+  <div class="about-left">
+    <div class="section-label" style="margin-bottom:16px;">About Me</div>
+    <h2 style="font-family:'Bebas Neue',sans-serif;font-size:42px;color:#fff;letter-spacing:1px;margin-bottom:20px;line-height:1;">
+      Engineer.<br>Builder.<br><span style="color:var(--sky);">Problem Solver.</span>
+    </h2>
+    <p style="color:var(--muted);font-size:14px;line-height:1.8;margin-bottom:24px;">
+      BSc Software Engineering graduate from USIU–Africa. I've interned at Safaricom PLC, contributed to production systems, and built tools that real people use.
+    </p>
+    <p style="color:var(--muted);font-size:14px;line-height:1.8;">
+      My focus is on writing clean, scalable code  and turning complex problems into elegant solutions.
+    </p>
+    <a href="Aboutme.html" style="display:inline-flex;align-items:center;gap:8px;margin-top:32px;color:var(--sky);text-decoration:none;font-size:12px;letter-spacing:1.5px;text-transform:uppercase;transition:gap 0.3s;">
+      Full Story <i class="fa-solid fa-arrow-right"></i>
+    </a>
+  </div>
+  <div class="about-right">
+    <div class="section-label" style="margin-bottom:28px;">Core Skills</div>
+    <div class="skill-row">
+      <div class="skill-name">Full-Stack Development <span>92%</span></div>
+      <div class="skill-bar"><div class="skill-fill"></div></div>
+    </div>
+    <div class="skill-row">
+      <div class="skill-name">Applied AI & ML <span>88%</span></div>
+      <div class="skill-bar"><div class="skill-fill"></div></div>
+    </div>
+    <div class="skill-row">
+      <div class="skill-name">Distributed Systems <span>85%</span></div>
+      <div class="skill-bar"><div class="skill-fill"></div></div>
+    </div>
+    <div class="skill-row">
+      <div class="skill-name">Mobile Development <span>80%</span></div>
+      <div class="skill-bar"><div class="skill-fill"></div></div>
+    </div>
+    <div class="skill-row">
+      <div class="skill-name">DevOps & Cloud <span>78%</span></div>
+      <div class="skill-bar"><div class="skill-fill"></div></div>
+    </div>
+  </div>
+</div>
+
+<!-- CTA -->
+<div class="cta-strip">
+  <h2>Let's Build Something.</h2>
+  <p>Have a project, an idea, or just want to talk tech? I'm open to freelance, contracts, and full-time roles.</p>
+  <a href="Aboutme.html#contact" class="btn-primary">Get In Touch <i class="fa-solid fa-arrow-right"></i></a>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-logo">Yuro Builds</div>
+  <div class="footer-icons">
+    <a href="https://github.com/YURO-1" target="_blank"><i class="fab fa-github"></i></a>
+    <a href="https://www.linkedin.com/in/yuro-aungo-383890269/" target="_blank"><i class="fab fa-linkedin"></i></a>
+    <a href="mailto:yuroaungo533@gmail.com"><i class="fa-solid fa-envelope"></i></a>
+  </div>
+  <div class="footer-copy">&copy; 2025 Yuro Aungo · All rights reserved.</div>
+</footer>
+
+<!-- POPUP -->
+<div id="popup" class="popup-overlay">
+  <div class="popup-box">
+    <p id="popup-message"></p>
+    <button onclick="closeModal()">Got it</button>
+  </div>
+</div>
+
+<!-- EMAILJS -->
+<script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+<script>
+  emailjs.init({ publicKey: "JtvOXprwmXKBUkspm" });
+</script>
+<script src="script.js"></script>
 
 </body>
 </html>
-
